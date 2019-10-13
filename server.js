@@ -11,11 +11,17 @@ const handle  = app.getRequestHandler()
 app.prepare().then(() => {
   const server = new koa()
   const router = new Router()
-  server.use(router.routes())
-  server.use(async (ctx, next) => {
-    ctx.body = '<span>koa render</span>'
-    await next()
+  
+  router.get('/a/:id', async (ctx) => {
+    const id = ctx.params.id
+    await handle(ctx.req, ctx.res, {
+      pathname: '/a',
+      query: {id}
+    })
   })
+  
+  server.use(router.routes())
+
   server.use(async (ctx, next)=> {
     await handle(ctx.req, ctx.res)
     ctx.respond = false

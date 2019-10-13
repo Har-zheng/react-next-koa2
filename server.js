@@ -1,4 +1,5 @@
 const koa  = require('koa2')
+const Router = require('koa-router')
 const next = require('next')
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -9,6 +10,12 @@ const handle  = app.getRequestHandler()
 
 app.prepare().then(() => {
   const server = new koa()
+  const router = new Router()
+  server.use(router.routes())
+  server.use(async (ctx, next) => {
+    ctx.body = '<span>koa render</span>'
+    await next()
+  })
   server.use(async (ctx, next)=> {
     await handle(ctx.req, ctx.res)
     ctx.respond = false

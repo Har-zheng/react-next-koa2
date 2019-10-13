@@ -13,9 +13,6 @@ function gotoTestB() {
 }
  return (
  <div>
-  <Link href='/a?id=1' as='/a/1'>
     <Button>Index</Button>
-  </Link>
-  <Button onClick={gotoTestB}>test a router</Button>
  </div>
 )}

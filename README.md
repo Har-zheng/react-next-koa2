@@ -34,3 +34,9 @@
 > 安装 cnpm i styled-components babel-plugin-styled-components
 + nextjs中异步加载模块和组件的加载
 + next.config.js 配置文件
+### 第4章 React新特性Hooks讲解
++ 让函数组件具有类组件的能力
+#### state讲解
+1 useState
+2 useReender
++ effect-hooks 的使用

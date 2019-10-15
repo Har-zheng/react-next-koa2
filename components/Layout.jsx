@@ -6,7 +6,7 @@ export default ({ children }) => (
     <Link href='/a?id=1' as='/a/1'>
     <Button>Index</Button>
   </Link>
-    <Link href='/a?id=2'>
+    <Link href='/b?id=2'>
     <Button>IndexB</Button>
   </Link>
   <div>

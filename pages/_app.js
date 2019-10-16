@@ -4,7 +4,13 @@ import 'antd/dist/antd.css'
 
 import Layout from '../components/Layout'
 
+import  MyContext from '../lib/my-context'
+import { Button } from 'antd'
+
 class MyApp extends App {
+  state ={
+    context: 'value'
+  }
   // 全局性的数据获取 _app 修改默认的app全局配置  每个组件切换时都会作用到
   // nextjs内部封装的默认方法
   static async getInitialProps({Component,ctx}){
@@ -26,7 +32,10 @@ class MyApp extends App {
      return (
        <div>
          <Layout>
-          <Component {...pageProps}></Component>
+           <MyContext.Provider value={this.state.context}>
+            <Component {...pageProps}></Component>
+            <Button onClick={()=> this.setState({context: `${this.state.context}123456`})}>update  context</Button>
+          </MyContext.Provider>
          </Layout>
        </div>
      )

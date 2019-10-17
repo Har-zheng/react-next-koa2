@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useReducer, useLayoutEffect,useContext } from 'react'
+import React, { useState, useEffect, useReducer, useLayoutEffect,useContext,useRef,memo,useMemo,useCallback } from 'react'
 
 import MyContext from '../lib/my-context'
 class MyCount extends React.Component {
+  constructor() {
+    super()
+    this.ref = React.createRef()
+  }
   state = {
     count: 0
   }
@@ -18,7 +22,7 @@ class MyCount extends React.Component {
     }
   }
   render() {
-    return <span>{this.state.count}</span>
+    return <span ref={this.ref}>{this.state.count}</span>
   }
 }
 function countReducer(state, action) {
@@ -36,6 +40,11 @@ function MyCountFunc() {
   const [count, dispatchCount] = useReducer(countReducer, 0)
   const [name, setName] = useState('zhz useEffect')
   const context = useContext(MyContext)
+  const config = useMemo(() => ({
+    text: `count is ${count}`,
+    color: count > 3 ? 'red' : 'blue'
+  }), []) // [] 这里的数组和  useEffect中数组效果一样
+  const inputRef = useRef()
   // setCount(1) 设置值
   // setCount(c => c+1) c 是在那一瞬间的值
   // useEffect(() => {
@@ -52,16 +61,30 @@ function MyCountFunc() {
 
   // 组件的渲染之前调用的  
   useLayoutEffect(()=> {
+    console.log(inputRef)
     console.log('Layout effect invoked')
     return () => console.log('Layout effect deteched')
   },[count])
+  const handleButtonClick = useCallback(()=> dispatchCount({type: 'add'}),[])
   return (
     <>
-      <button onClick={()=> dispatchCount({type: 'add'})}>{count}</button>
-      <input value={name} onChange={(e) => setName(e.target.value)}></input>
+      <input ref={inputRef} value={name} onChange={(e) => setName(e.target.value)}></input>
+      <Child
+        config={config}
+        onButtonClick={handleButtonClick}
+      ></Child>
       <p>{context}</p>
     </>
   )
 }
+
+const Child = memo(function Child({onButtonClick, config}){
+  console.log('render click')
+  return (
+    <button onClick={onButtonClick} style={{color: config.color}}>
+      {config.text}
+    </button>
+  )
+})
 
 export default MyCountFunc

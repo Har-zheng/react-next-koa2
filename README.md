@@ -41,3 +41,8 @@
 2 useReender
 + effect-hooks 的使用
 + context Hook
++ ref Hook
++ Hooks渲染优化
+```javascript
+  memo,useMemo 
+```

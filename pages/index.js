@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from 'antd'
+import store from '../store/store'
 
 import Router from 'next/router'
 export default () =>{
@@ -11,6 +12,7 @@ function gotoTestB() {
     }
   }, '/a/2')
 }
+// console.log(store)
  return (
  <div>
     <Button>Index</Button>

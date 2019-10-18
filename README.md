@@ -46,3 +46,4 @@
 ```javascript
   memo,useMemo 
 ```
++ 闭包陷阱

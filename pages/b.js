@@ -26,6 +26,7 @@ class MyCount extends React.Component {
   }
 }
 function countReducer(state, action) {
+  console.log(state, action)
   switch (action.type) {
     case 'add':
       return state + 1
@@ -38,12 +39,16 @@ function countReducer(state, action) {
 function MyCountFunc() {
   // const [count, setCount] = useState(0) // 解构 赋值
   const [count, dispatchCount] = useReducer(countReducer, 0)
+  console.log(count)
   const [name, setName] = useState('zhz useEffect')
   const context = useContext(MyContext)
   const config = useMemo(() => ({
     text: `count is ${count}`,
     color: count > 3 ? 'red' : 'blue'
-  }), []) // [] 这里的数组和  useEffect中数组效果一样
+  })) // [] 这里的数组和  useEffect中数组效果一样 
+  const handleButtonClick = useCallback(
+    ()=> dispatchCount({type: 'add'}, console.log('123')),[],
+    )
   const inputRef = useRef()
   // setCount(1) 设置值
   // setCount(c => c+1) c 是在那一瞬间的值
@@ -54,18 +59,24 @@ function MyCountFunc() {
   //   return () => clearInterval(interval)
   // }, []) //1[] 先执行return  再执行代码块 如果传入空数组  只有在第一次加载  才执行
   // 
-  useEffect(()=> {
-    console.log('effect invoked')
-    return () => console.log('effect deteched')
-  },[]) //2 [] 里面传入的向  如果在这次传入的内容有改变  先执行effect deteched=> 再effect invoked
+  // useEffect(()=> {
+  //   console.log('effect invoked')
+  //   return () => console.log('effect deteched')
+  // },[]) //2 [] 里面传入的向  如果在这次传入的内容有改变  先执行effect deteched=> 再effect invoked
 
   // 组件的渲染之前调用的  
-  useLayoutEffect(()=> {
-    console.log(inputRef)
-    console.log('Layout effect invoked')
-    return () => console.log('Layout effect deteched')
-  },[count])
-  const handleButtonClick = useCallback(()=> dispatchCount({type: 'add'}),[])
+  // useLayoutEffect(()=> {
+  //   console.log(inputRef)
+  //   console.log('Layout effect invoked')
+  //   return () => console.log('Layout effect deteched')
+  // },[count])
+  const handleAlertButtonClick = function() {
+    setTimeout(()=> {
+      // alert(count)
+      console.log(count)
+    },2000)
+    console.log(count)
+  }
   return (
     <>
       <input ref={inputRef} value={name} onChange={(e) => setName(e.target.value)}></input>
@@ -73,6 +84,7 @@ function MyCountFunc() {
         config={config}
         onButtonClick={handleButtonClick}
       ></Child>
+      <button onClick={handleAlertButtonClick()}>alert</button>
       <p>{context}</p>
     </>
   )

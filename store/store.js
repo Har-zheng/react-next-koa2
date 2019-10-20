@@ -1,10 +1,13 @@
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
 
 const initialState = {
   count: 0
 }
+const userInitialState ={
+  username: 'zhz'
+}
 
-function reducer(state = initialState, action) {
+function countReducer(state = initialState, action) {
   console.log(state, action)
   switch (action.type) {
     case 'ADD':
@@ -13,7 +16,26 @@ function reducer(state = initialState, action) {
       return state
   }
 }
-const store = createStore(reducer,initialState)
+const UPDATE_USERNAME = "UPDATE_USERNAME"
+function userRducer(state = userInitialState, action){
+  switch (action.type) {
+    case UPDATE_USERNAME:
+      return {
+        ...state,
+        username: action.name
+      }
+    default:
+      return state;
+  }
+}
+const allRefucers = combineReducers({
+  counter: countReducer,
+  user: userRducer
+})
+const store = createStore(allRefucers,{
+  counter: initialState,
+  user: userInitialState
+})
 // dispatch: ƒ dispatch(action)
 // getState: ƒ getState()
 // replaceReducer: ƒ replaceReducer(nextReducer)
@@ -26,3 +48,4 @@ store.subscribe(() => {
   console.log('change', store.getState()) 
 })
 store.dispatch({type: 'ADD'})
+store.dispatch({type: 'UPDATE_USERNAME', name: 'lanlan'})

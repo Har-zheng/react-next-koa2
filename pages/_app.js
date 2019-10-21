@@ -1,46 +1,42 @@
-import App from 'next/app'
-
 import 'antd/dist/antd.css'
 
-import Layout from '../components/Layout'
+import React from 'react'
+import App from 'next/app'
+import { Provider } from 'react-redux'
 
-import  MyContext from '../lib/my-context'
-import { Button } from 'antd'
+import Layout from '../components/Layout.jsx'
+import withRedux from '../lib/with-redux'
 
-class MyApp extends App {
-  state ={
-    context: 'value'
-  }
-  // 全局性的数据获取 _app 修改默认的app全局配置  每个组件切换时都会作用到
-  // nextjs内部封装的默认方法
-  static async getInitialProps({Component,ctx}){
-    console.log(Component)
-    let pageProps
-    if(Component.getInitialProps){
+ class MyApp extends App {
+
+  static async getInitialProps(ctx) {
+    // console.log('app init') 
+    
+    const { Component } = ctx
+
+    let pageProps = {}
+    if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
     return {
-       pageProps
+      pageProps
     }
-
   }
 
-   render() {
-     const { Component, pageProps} = this.props
-     console.log(pageProps)
-     console.log(Component)
-     return (
-       <div>
-         <Layout>
-           <MyContext.Provider value={this.state.context}>
-            <Component {...pageProps}></Component>
-            <Button onClick={()=> this.setState({context: `${this.state.context}123456`})}>update  context</Button>
-          </MyContext.Provider>
-         </Layout>
-       </div>
-     )
-   }
+  render () {
+    const { Component, pageProps, reduxStore } = this.props
+    return (
+        <Provider store={reduxStore}>
+          <Layout> 
+            <Component {...pageProps} />
+            {/* <Button onClick={() => this.setState({ context: `${this.state.context}123456` })}>update  context</Button> */}
+          </Layout>
+        </Provider>
+    )
+  }
 }
 
 
-export default MyApp
+export default withRedux(MyApp)
+
+// <Button onClick={() => this.setState({ context: `${this.state.context}123456` })}>update  context</Button>

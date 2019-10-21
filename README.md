@@ -47,3 +47,8 @@
   memo,useMemo 
 ```
 + 闭包陷阱
++ redux-thunk
++ react-redux
+
++ nextjs Hoc 模式
+> 接受组件作为参数并返回新的组件

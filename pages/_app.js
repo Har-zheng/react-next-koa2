@@ -29,7 +29,6 @@ import withRedux from '../lib/with-redux'
         <Provider store={reduxStore}>
           <Layout> 
             <Component {...pageProps} />
-            {/* <Button onClick={() => this.setState({ context: `${this.state.context}123456` })}>update  context</Button> */}
           </Layout>
         </Provider>
     )

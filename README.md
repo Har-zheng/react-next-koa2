@@ -57,3 +57,4 @@
 + 注册github-OAuth-App
 + OAuth-code认证方式如何保证安全
 > 学习是一个长期艰苦的过程  但是同时也是一个快乐成长的存在  加油 宏振
++ redis 安装 windows github地址  https://github.com/microsoftarchive/redis/releases

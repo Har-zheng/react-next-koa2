@@ -1,7 +1,16 @@
 const withCSS = require('@zeit/next-css')
 
-if(typeof require !== 'undefined'){
+const config = require('./config')
+
+if (typeof require !== 'undefined') {
   require.extensions['.css'] = file => {
   }
 }
-module.exports = withCSS({})
+const GITHUB_OAUTH_URL = "https://github.com/login/oauth/authorize"
+const SCOPE = 'user'
+module.exports = withCSS({
+  publicRuntimeConfig: {
+    GITHUB_OAUTH_URL,
+    OAUTH_URL: `${GITHUB_OAUTH_URL}?client_id=${config.github.client_id}&scope=${SCOPE}`
+  }
+})

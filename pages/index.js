@@ -22,6 +22,7 @@ function gotoTestB() {
     <p>userName{ username }</p>
     <input value={username} onChange={ (e) => rename(e.target.value) } />
     <button onClick={()=> add(counter)}>do add</button>
+    <a href=""></a>
  </div>
 )}
 Index.getInitialProps = async ({reduxStore}) => {

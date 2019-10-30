@@ -12,9 +12,9 @@ class MyDocument extends Document {
     const sheet = new ServerStyleSheet()
     // ctx.renderPage = () => {}
     const originalRenderPage = ctx.renderPage
-    console.log(ctx)
+    // console.log(ctx)
     try{
-      console.log(ctx)
+      // console.log(ctx)
       ctx.renderPage = () => originalRenderPage({
         enhanceApp: App => (props) => sheet.collectStyles(<App {...props}></App>)
       })

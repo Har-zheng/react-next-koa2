@@ -2,7 +2,8 @@ import React from 'react'
 import { Button } from 'antd'
 import {add} from '../store/store'
 import { connect } from 'react-redux'
-
+import getConfig from 'next/config'
+const { publicRuntimeConfig } = getConfig()
  
 import Router from 'next/router'
 const Index =  ({counter, username,rename,add}) =>{
@@ -22,7 +23,7 @@ function gotoTestB() {
     <p>userName{ username }</p>
     <input value={username} onChange={ (e) => rename(e.target.value) } />
     <button onClick={()=> add(counter)}>do add</button>
-    <a href=""></a>
+    <a href={ publicRuntimeConfig.OAUTH_URL }> 去登陆 </a>
  </div>
 )}
 Index.getInitialProps = async ({reduxStore}) => {

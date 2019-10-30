@@ -6,6 +6,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const session = require('koa-session')
 const app = next({ dev })
 
+const auth = require('./server/auth')
 const handle = app.getRequestHandler()
 
 const RedisSessionStore = require('./server/session-store')
@@ -26,6 +27,8 @@ app.prepare().then(() => {
 
   server.use(session(SESSION_CONFIG, server))
 
+  // 配置处理 github oauth的登录
+auth(server)
 
   server.use(async (ctx,next)=>{
     console.log('session is:',ctx.session)

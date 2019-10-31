@@ -1,8 +1,8 @@
 module.exports = {
   github: {
     "request_token_url": 'https://github.com/login/oauth/access_token',
-    "client_ID": '574df62e69b266b02b9e',
-    "client_secret": "b643db27b89b4dcc3c8ed01974a7b0d8b9811812"
+    "client_id": '9053c66298ab25bc5cd9',
+    "client_secret": "f3ccfcc6677f53d841e8fa1451b4b90f52972a38"
   }
 }
 

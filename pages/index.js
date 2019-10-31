@@ -1,4 +1,5 @@
-import React from 'react'
+import { useEffect } from 'react'
+import axios from 'axios'
 import { Button } from 'antd'
 import {add} from '../store/store'
 import { connect } from 'react-redux'
@@ -16,6 +17,11 @@ function gotoTestB() {
   }, '/a/2')
 }
 // console.log(store)
+useEffect(() => {
+  axios.get('/api/user/info').then(res => {
+    console.log(res)
+  })
+}, [])
  return (
  <div>
     <Button>Index</Button>

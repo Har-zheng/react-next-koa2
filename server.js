@@ -26,15 +26,15 @@ app.prepare().then(() => {
   }
 
   server.use(session(SESSION_CONFIG, server))
+  server.use(router.routes())
 
   // 配置处理 github oauth的登录
-auth(server)
+  auth(server)
 
-  server.use(async (ctx,next)=>{
-    console.log('session is:',ctx.session)
+  server.use(async (ctx, next) => {
+    console.log('session is:', ctx.session)
     await next();
-})
-
+  })
   router.get('/a/:id', async (ctx) => {
     const id = ctx.params.id
     await handle(ctx.req, ctx.res, {
@@ -42,10 +42,23 @@ auth(server)
       query: { id }
     })
   })
+
+  router.get('/api/user/info', async ctx => {
+    const user = ctx.session.userInfo
+    console.log(ctx.session.userInfo)
+    if (user === undefined) {
+      ctx.status = 401
+      ctx.body = 'Need Login'
+    } else  { //status
+      ctx.body = user
+      ctx.set('Content-type', 'application/json')
+    }
+
+  })
   router.get('/delete/user', async (ctx) => {
     ctx.session.user = null;
     ctx.body = 'set session success';
-});
+  });
   router.get('/set/user', async (ctx) => {
     // ctx.respond = false
     ctx.session.user = {
@@ -67,7 +80,7 @@ auth(server)
   //   }
   // })
 
-  server.use(router.routes())
+
 
   server.use(async (ctx, next) => {
     await handle(ctx.req, ctx.res)

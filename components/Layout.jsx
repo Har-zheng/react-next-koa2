@@ -22,6 +22,9 @@ const footerStyle = {
   textAlign: 'center'
 }
 const Comp = ({ color, children, style }) => <div style={{ color, ...style }}>{children}</div>
+const handleLogout = ()=> {
+  
+}
 const userDropdown = (
   <Menu>
     <Menu.Item>

@@ -10,6 +10,9 @@ const LOGOUT = "LOGOUT"
 const UPDATE_USERNAME = "UPDATE_USERNAME"
 function userRducer(state = userInitialState, action) {
   switch (action.type) {
+    case LOGOUT:{
+      return {}
+    }
     default:
       return state;
   }
@@ -36,6 +39,13 @@ export function logout(params) {
     })
   }
 }
+/**
+ * 
+ * {
+ * user: {},
+ * count: {}
+ * }
+ */
 
  const  initializeStore = (state)=>{
   const store = createStore(

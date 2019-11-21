@@ -2,10 +2,11 @@ import { useState, useCallback } from 'react'
 import getConfig from 'next/config'
 import { connect } from 'react-redux'
 
-import { Button, Layout, Icon, Input, Avatar, Tooltip, Dropdown,Menu } from 'antd'
+import { Button, Layout, Icon, Input, Avatar, Tooltip, Dropdown, Menu } from 'antd'
 const { Header, Content, Footer } = Layout
 
 import Container from './Container'
+import { logout } from '../store/store'
 import axios from 'axios'
 
 const { publicRuntimeConfig } = getConfig()
@@ -22,27 +23,29 @@ const footerStyle = {
   textAlign: 'center'
 }
 const Comp = ({ color, children, style }) => <div style={{ color, ...style }}>{children}</div>
-const handleLogout = ()=> {
-  
-}
-const userDropdown = (
-  <Menu>
-    <Menu.Item>
-      <a href="javascript:void(0)" onClick={handleLogout}>
-        登出
-      </a>
-    </Menu.Item>
-  </Menu>
-)
-function MyLayout  ({ children,user })  {
+
+
+function MyLayout({ children, user, logout }) {
 
   const [search, setSearch] = useState('')
   const handleSearchChange = useCallback((event) => {
     setSearch(event, target.value)
   }, [setSearch])
-  const handleOnSearch = useCallback(() => {
+  const handleLogout = useCallback(() => {
+    logout()
+  }, [logout])
+  const handleGotoOAth = useCallback(()=> {
 
-  }, [])
+  },[])
+  const userDropdown = (
+    <Menu>
+      <Menu.Item>
+        <a href="javascript:void(0)" onClick={handleLogout}>
+          登出
+        </a>
+      </Menu.Item>
+    </Menu>
+  )
   return (
     <Layout>
       <Header>
@@ -52,26 +55,26 @@ function MyLayout  ({ children,user })  {
               <Icon type="github" style={githubIconStyle}></Icon>
             </div>
             <div>
-              <Input.Search placeholder="搜索仓库" value={setSearch} onChange={handleSearchChange} onSearch={handleOnSearch} />
+              <Input.Search placeholder="搜索仓库" value={setSearch} onChange={handleSearchChange}  />
             </div>
           </div>
           <div className="header-right">
             <div className="user">
               {
-               
+
                 user && user.id ? (
                   <Dropdown overlay={userDropdown}>
-                  <a href="/">
-                    <Avatar size={40} src={user.avatar_url}></Avatar>
-                  </a>
+                    <a href="/">
+                      <Avatar size={40} src={user.avatar_url}></Avatar>
+                    </a>
                   </Dropdown>
                 ) : (
-                  <Tooltip title="点击进行登录">
-                  <a href={publicRuntimeConfig.OAUTH_URL}>
-                  <Avatar size={40} icon='user'></Avatar>
-                  </a>
-                  </Tooltip>
-                )
+                    <Tooltip title="点击进行登录">
+                      <a href={publicRuntimeConfig.OAUTH_URL} onClick={handleGotoOAth}>
+                        <Avatar size={40} icon='user'></Avatar>
+                      </a>
+                    </Tooltip>
+                  )
               }
             </div>
           </div>
@@ -115,8 +118,13 @@ function MyLayout  ({ children,user })  {
   )
 }
 const mapstate = (state) => {
-  return { 
+  return {
     user: state.user
   }
 }
-export default connect(mapstate ,null)(MyLayout)
+const mapReducer = (dispatch) => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+export default connect(mapstate, mapReducer)(MyLayout)

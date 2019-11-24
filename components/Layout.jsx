@@ -35,7 +35,7 @@ function MyLayout({ children, user, logout }) {
     logout()
   }, [logout])
   const handleGotoOAth = useCallback(()=> {
-
+    axios.get(`/prepare-auth?`)
   },[])
   const userDropdown = (
     <Menu>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useLayoutEffect,useContext,useRef,memo,useMemo,useCallback } from 'react'
+import React, { useState, useReducer, useLayoutEffect,useContext,useRef,memo,useMemo,useCallback } from 'react'
 
 import MyContext from '../lib/my-context'
 class MyCount extends React.Component {

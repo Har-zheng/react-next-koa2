@@ -79,9 +79,6 @@ app.prepare().then(() => {
   //     console.log('session is:', ctx.session)
   //   }
   // })
-
-
-
   server.use(async (ctx, next) => {
     ctx.req.session = ctx.session
     await handle(ctx.req, ctx.res)

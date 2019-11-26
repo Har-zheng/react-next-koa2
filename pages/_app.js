@@ -11,7 +11,6 @@ import withRedux from '../lib/with-redux'
 
   static async getInitialProps(ctx) {
     // console.log('app init') 
-    
     const { Component } = ctx
 
     let pageProps = {}
@@ -34,7 +33,6 @@ import withRedux from '../lib/with-redux'
     )
   }
 }
-
 
 export default withRedux(MyApp)
 

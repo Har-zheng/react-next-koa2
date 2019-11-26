@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import getConfig from 'next/config'
 import { connect } from 'react-redux'
+import { withRouter } from 'next/router'
 
 import { Button, Layout, Icon, Input, Avatar, Tooltip, Dropdown, Menu } from 'antd'
 const { Header, Content, Footer } = Layout
@@ -25,8 +26,7 @@ const footerStyle = {
 const Comp = ({ color, children, style }) => <div style={{ color, ...style }}>{children}</div>
 
 
-function MyLayout({ children, user, logout }) {
-
+function MyLayout({ children, user, logout,router }) {
   const [search, setSearch] = useState('')
   const handleSearchChange = useCallback((event) => {
     setSearch(event, target.value)
@@ -34,15 +34,26 @@ function MyLayout({ children, user, logout }) {
   const handleLogout = useCallback(() => {
     logout()
   }, [logout])
-  const handleGotoOAth = useCallback(()=> {
-    axios.get(`/prepare-auth?`)
+  const handleGotoOAth = useCallback(e=> {
+    e.preventDefault()
+    axios.get(`/prepare-auth?url=${router.asPath}`).then(resp => {
+      console.log(publicRuntimeConfig.OAUTH_URL)
+      console.log(resp.status)
+      if(resp.status === 200){
+        location.href = publicRuntimeConfig.OAUTH_URL
+      }else{
+        console.log('prepare auth failed', resp )
+      }
+    }).catch(err => {
+      console.log('prepare auth failed', resp)
+    })
   },[])
   const userDropdown = (
     <Menu>
       <Menu.Item>
-        <a href="javascript:void(0)" onClick={handleLogout}>
+        <i  onClick={handleLogout}>
           登出
-        </a>
+        </i>
       </Menu.Item>
     </Menu>
   )
@@ -55,7 +66,7 @@ function MyLayout({ children, user, logout }) {
               <Icon type="github" style={githubIconStyle}></Icon>
             </div>
             <div>
-              <Input.Search placeholder="搜索仓库" value={setSearch} onChange={handleSearchChange}  />
+              <Input.Search placeholder="搜索仓库"  onChange={handleSearchChange}  />
             </div>
           </div>
           <div className="header-right">
@@ -127,4 +138,4 @@ const mapReducer = (dispatch) => {
     logout: () => dispatch(logout())
   }
 }
-export default connect(mapstate, mapReducer)(MyLayout)
+export default connect(mapstate, mapReducer)(withRouter(MyLayout))

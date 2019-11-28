@@ -78,7 +78,7 @@ module.exports = (server) => {
         url
       } = ctx.query
       ctx.session.urlBeforeOAuth = url
-      ctx.body = 'ready'
+      ctx.redirect(config.OAUTH_URL)
     } else {
       await next()
     }

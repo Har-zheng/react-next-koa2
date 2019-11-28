@@ -9,6 +9,7 @@ const { Header, Content, Footer } = Layout
 import Container from './Container'
 import { logout } from '../store/store'
 import axios from 'axios'
+import Link from 'next/link'
 
 const { publicRuntimeConfig } = getConfig()
 
@@ -27,10 +28,16 @@ const Comp = ({ color, children, style }) => <div style={{ color, ...style }}>{c
 
 
 function MyLayout({ children, user, logout,router }) {
-  const [search, setSearch] = useState('')
+  const urlQuery = router.query && router.query.query
+
+  const [search, setSearch] = useState(urlQuery || '')
+
   const handleSearchChange = useCallback((event) => {
-    setSearch(event, target.value)
+    setSearch(event.target.value)
   }, [setSearch])
+  const handleOnSearch = useCallback(()=> {
+    router.push(`/search?query=${search}`)
+  },[search])
   const handleLogout = useCallback(() => {
     logout()
   }, [logout])
@@ -63,10 +70,12 @@ function MyLayout({ children, user, logout,router }) {
         <div className="header-inner">
           <div className="header-left">
             <div className="logo">
-              <Icon type="github" style={githubIconStyle}></Icon>
+              <Link href="/">
+                <Icon type="github" style={githubIconStyle}></Icon>
+              </Link>
             </div>
             <div>
-              <Input.Search placeholder="搜索仓库"  onChange={handleSearchChange}  />
+              <Input.Search placeholder="搜索仓库"  onChange={handleSearchChange} onSearch={ handleOnSearch}  />
             </div>
           </div>
           <div className="header-right">
@@ -81,7 +90,7 @@ function MyLayout({ children, user, logout,router }) {
                   </Dropdown>
                 ) : (
                     <Tooltip title="点击进行登录">
-                      <a href={publicRuntimeConfig.OAUTH_URL} onClick={handleGotoOAth}>
+                      <a href={`/prepare-auth?url=${router.asPath}`}>
                         <Avatar size={40} icon='user'></Avatar>
                       </a>
                     </Tooltip>
@@ -117,7 +126,10 @@ function MyLayout({ children, user, logout,router }) {
           height: 100%;
         }
         .ant-layout{
-          height: 100%;
+          min-height: 100%;
+        }
+        .ant-layout-content{
+          background: #fff;
         }
         .ant-layout-header{
           paddingLeft: 0;

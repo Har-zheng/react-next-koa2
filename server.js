@@ -8,6 +8,7 @@ const app = next({ dev })
 
 const auth = require('./server/auth')
 const handle = app.getRequestHandler()
+const api = require('./server/api')
 
 const RedisSessionStore = require('./server/session-store')
 
@@ -30,6 +31,7 @@ app.prepare().then(() => {
 
   // 配置处理 github oauth的登录
   auth(server)
+  api(server)
 
   server.use(async (ctx, next) => {
     console.log('session is:', ctx.session)
